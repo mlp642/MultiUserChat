@@ -10,7 +10,7 @@ namespace ChatStream
     public class Server
     {
         private TcpListener listener;
-        private List<TcpClient> clients = new List<TcpClient>();
+        private Dictionary<string, TcpClient> clients = new Dictionary<string, TcpClient>();
 
         public Server(int port)
         {
@@ -26,11 +26,29 @@ namespace ChatStream
 
                 while (true)
                 {
-                    TcpClient client = listener.AcceptTcpClient();
-                    clients.Add(client);
+                    TcpClient tcpClient = listener.AcceptTcpClient();
+                    Console.WriteLine("Cliente conectado. Solicitando nombre de usuario...");
+
+                    NetworkStream stream = tcpClient.GetStream();
+                    byte[] buffer = new byte[1024];
+                    int bytesRead = stream.Read(buffer, 0, buffer.Length);
+                    string username = Encoding.ASCII.GetString(buffer, 0, bytesRead);
+
+                    while (clients.ContainsKey(username))
+                    {
+                        byte[] usernameExistMessage = Encoding.ASCII.GetBytes("El nombre de usuario ya está en uso. Introduzca otro nombre de usuario:");
+                        stream.Write(usernameExistMessage, 0, usernameExistMessage.Length);
+                        bytesRead = stream.Read(buffer, 0, buffer.Length);
+                        username = Encoding.ASCII.GetString(buffer, 0, bytesRead);
+                    }
+
+                    byte[] usernameConfirmMessage = Encoding.ASCII.GetBytes("Usuario registrado con éxito. Puedes empezar a chatear.");
+                    stream.Write(usernameConfirmMessage, 0, usernameConfirmMessage.Length);
+
+                    clients.Add(username, tcpClient);
 
                     Thread clientThread = new Thread(HandleClient);
-                    clientThread.Start(client);
+                    clientThread.Start(username);
                 }
             }
             catch (Exception ex)
@@ -41,7 +59,8 @@ namespace ChatStream
 
         private void HandleClient(object obj)
         {
-            TcpClient client = (TcpClient)obj;
+            string username = (string)obj;
+            TcpClient client = clients[username];
             NetworkStream stream = client.GetStream();
 
             byte[] buffer = new byte[1024];
@@ -51,7 +70,7 @@ namespace ChatStream
             {
                 while ((bytesRead = stream.Read(buffer, 0, buffer.Length)) > 0)
                 {
-                    string message = Encoding.ASCII.GetString(buffer, 0, bytesRead);
+                    string message = $"{username}: {Encoding.ASCII.GetString(buffer, 0, bytesRead)}";
                     Console.WriteLine($"Mensaje recibido: {message}");
 
                     // Reenviar el mensaje a todos los clientes conectados
@@ -61,14 +80,14 @@ namespace ChatStream
             catch (Exception)
             {
                 // Si ocurre un error al leer del cliente, asumimos que se desconectó
-                Console.WriteLine("Cliente desconectado.");
-                clients.Remove(client);
+                Console.WriteLine($"Cliente {username} desconectado.");
+                clients.Remove(username);
             }
         }
 
         private void BroadcastMessage(string message)
         {
-            foreach (TcpClient client in clients)
+            foreach (TcpClient client in clients.Values)
             {
                 NetworkStream stream = client.GetStream();
                 byte[] buffer = Encoding.ASCII.GetBytes(message);
