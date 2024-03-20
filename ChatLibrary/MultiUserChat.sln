@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34714.143
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatLibrary", "ChatLibrary.csproj", "{B34834C0-BF0F-4E9F-BFD6-D2E0F7DBEFC9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cliente", "..\Cliente\Cliente.csproj", "{4166FF3F-5800-42B7-B364-FFBEA1A9DDF8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server", "..\Server\Server.csproj", "{074DC486-8123-4A03-92B8-5BED73A0C567}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B34834C0-BF0F-4E9F-BFD6-D2E0F7DBEFC9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B34834C0-BF0F-4E9F-BFD6-D2E0F7DBEFC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B34834C0-BF0F-4E9F-BFD6-D2E0F7DBEFC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B34834C0-BF0F-4E9F-BFD6-D2E0F7DBEFC9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4166FF3F-5800-42B7-B364-FFBEA1A9DDF8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4166FF3F-5800-42B7-B364-FFBEA1A9DDF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4166FF3F-5800-42B7-B364-FFBEA1A9DDF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4166FF3F-5800-42B7-B364-FFBEA1A9DDF8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{074DC486-8123-4A03-92B8-5BED73A0C567}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{074DC486-8123-4A03-92B8-5BED73A0C567}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{074DC486-8123-4A03-92B8-5BED73A0C567}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{074DC486-8123-4A03-92B8-5BED73A0C567}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8AEF634B-FEE8-45CF-A326-717E37E39A89}
+	EndGlobalSection
+EndGlobal
