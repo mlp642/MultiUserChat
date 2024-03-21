@@ -9,9 +9,17 @@ namespace ChatStream
         private TcpClient client;
         private NetworkStream stream;
 
-        public Client(string ipAddress, int port)
+        public event EventHandler<string> MessageReceived;
+        public event EventHandler Disconnected;
+
+        public Client()
         {
-            client = new TcpClient(ipAddress, port);
+            client = new TcpClient();
+        }
+
+        public void Connect(string ipAddress, int port)
+        {
+            client.Connect(ipAddress, port);
             stream = client.GetStream();
         }
 
@@ -25,15 +33,12 @@ namespace ChatStream
                 while ((bytesRead = stream.Read(buffer, 0, buffer.Length)) > 0)
                 {
                     string message = Encoding.UTF8.GetString(buffer, 0, bytesRead);
-                    if (message.Contains("unido"))
-                        Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine($"{message}");
-                    Console.ResetColor();
+                    MessageReceived?.Invoke(this, message);
                 }
             }
             catch (Exception)
             {
-                Console.WriteLine("Desconectado del servidor.");
+                Disconnected?.Invoke(this, EventArgs.Empty);
             }
             finally
             {
