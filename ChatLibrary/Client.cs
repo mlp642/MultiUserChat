@@ -24,8 +24,11 @@ namespace ChatStream
             {
                 while ((bytesRead = stream.Read(buffer, 0, buffer.Length)) > 0)
                 {
-                    string message = Encoding.ASCII.GetString(buffer, 0, bytesRead);
-                    Console.WriteLine($"Mensaje recibido: {message}");
+                    string message = Encoding.UTF8.GetString(buffer, 0, bytesRead);
+                    if (message.Contains("unido"))
+                        Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine($"{message}");
+                    Console.ResetColor();
                 }
             }
             catch (Exception)
@@ -41,7 +44,13 @@ namespace ChatStream
 
         public void SendMessage(string message)
         {
-            byte[] buffer = Encoding.ASCII.GetBytes(message);
+            byte[] buffer = Encoding.UTF8.GetBytes(message);
+            stream.Write(buffer, 0, buffer.Length);
+        }
+
+        public void SendUsername(string username)
+        {
+            byte[] buffer = Encoding.UTF8.GetBytes(username);
             stream.Write(buffer, 0, buffer.Length);
         }
     }
