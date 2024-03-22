@@ -68,6 +68,8 @@ class Program
 
           
         }
+
+        BroadcastMessage($"[{disconnectedUser.Username}] desconectado!");
     }
 
 
