@@ -19,14 +19,17 @@ public class PacketBuilder
     public void WriteMessage(string msg)
     {
         var msgLength = msg.Length;
-
         _ms.Write(BitConverter.GetBytes(msgLength), 0, 4);
-        _ms.Write(Encoding.ASCII.GetBytes(msg));
+
+        // Convertir el mensaje a bytes
+        byte[] msgBytes = Encoding.UTF8.GetBytes(msg);
+
+        // Escribir los bytes en el MemoryStream
+        _ms.Write(msgBytes, 0, msgBytes.Length);
     }
 
     public byte[] GetPacketBytes()
     {
-        return  _ms.ToArray();
-
+        return _ms.ToArray();
     }
 }
