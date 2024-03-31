@@ -21,12 +21,17 @@ namespace ChatUI.MVVM.ViewModel
 
         public MainViewModel()
         {
+            // Inicialización de las colecciones y del servidor
             users = new ObservableCollection<UserModel>();
             messages = new ObservableCollection<string>();
             _server = new Server();
+
+            // Subscripción a los eventos del servidor
             _server.connectedEvent += UserConnected;
             _server.msgReceivedEvent += MessageReceived;
             _server.userDisconnectEvent += RemoveUser;
+
+            // Asignación de comandos a las acciones
             ConnectToServerCommand = new RelayCommand(o => _server.ConnectToServer(userName), o => !string.IsNullOrEmpty(userName));
             sendMessageCommand = new RelayCommand(o => _server.SendMessageToServer(message), o => !string.IsNullOrEmpty(message));
         }
